@@ -1,6 +1,7 @@
 import os
 
-class Lock:
+
+class LockFolder:
     """
     A class to handle file-based locking mechanism for a specified folder.
 
