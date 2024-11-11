@@ -159,7 +159,7 @@ def possible_path_error():
 
     return False
 
-CTk.set_appearance_mode("dark")
+# CTk.set_appearance_mode("dark") // only for testing purposes
 root = CTk.CTk()
 root.geometry("800x500")
 root.title("File Order")
