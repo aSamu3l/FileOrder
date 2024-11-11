@@ -17,7 +17,7 @@
       <ul><li><a href="#supported-languages">Supported Languages</a></li></ul>
     </li>
     <li><a href="#license">License</a></li>
-    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#contributors">Contributors</a></li>
   </ol>
 </details>
 
