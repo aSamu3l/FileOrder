@@ -2,7 +2,6 @@ import json
 import os.path
 import signal
 import webbrowser
-
 import functions as f
 from lockf import LockFolder
 from PIL import Image
@@ -26,6 +25,13 @@ with open('./settings/setting.json') as sJ:
 
 lang = settingsJson["lang"]
 
+if lang not in langJson.keys():
+    lang = "EN"
+
+    with open('./settings/setting.json', 'w') as sJ:
+        settingsJson["lang"] = "EN"
+        json.dump(settingsJson, sJ, indent=4)
+
 def on_closing():
     folder.unlock()
     root.destroy()
@@ -36,6 +42,9 @@ def handle_exit(signum, frame):
 
 def open_repo(event):
     webbrowser.open_new("https://github.com/aSamu3l/FileOrder")
+
+def open_profile(event):
+    webbrowser.open_new("https://github.com/aSamu3l/")
 
 def changeLang(event):
     global lang
@@ -81,6 +90,7 @@ def destination_folder():
 
 
 def search():
+    global fileList
     name = nameEntry.get()
     extension = extensionEntry.get()
     start_with = startWithCheck.get()
@@ -91,8 +101,17 @@ def search():
 
     files = f.list_files_to_move(originFolderPath.get(), name, extension, start_with, case_sensitive)
 
-    for widget in fileList.winfo_children():
-        widget.destroy()
+    if len(files) == 0:
+        CTkM(title=langJson[lang]["Error"], message=langJson[lang]["noFilesFound"], icon="cancel")
+    elif len(files) == 1:
+        CTkM(title=langJson[lang]["Success"], message=langJson[lang]["fileFound"], icon="info")
+    else:
+        CTkM(title=langJson[lang]["Success"], message=langJson[lang]["filesFound"].replace("#", str(len(files))), icon="info")
+
+    fileList.destroy()
+    fileList = CTk.CTkScrollableFrame(optionFileFrame, fg_color=boxContent, width=238, height=360)
+    fileList.pack()
+    fileList.place(x=10, y=10)
 
     for file, move in files:
         var = CTk.BooleanVar(value=move)
@@ -107,7 +126,10 @@ def move():
     if possible_path_error():
         return
 
-    f.move_files_list(originFolderPath.get(), destinationFolderPath.get(), lista)
+    if f.move_files_list(originFolderPath.get(), destinationFolderPath.get(), lista) == 0:
+        CTkM(title=langJson[lang]["Success"], message=langJson[lang]["allFilesMoved"], icon="info")
+    else:
+        CTkM(title=langJson[lang]["Error"], message=langJson[lang]["someFilesMoved"], icon="cancel")
 
 def copy():
     lista = []
@@ -117,7 +139,10 @@ def copy():
     if possible_path_error():
         return
 
-    f.copy_files_list(originFolderPath.get(), destinationFolderPath.get(), lista)
+    if f.copy_files_list(originFolderPath.get(), destinationFolderPath.get(), lista) == 0:
+        CTkM(title=langJson[lang]["Success"], message=langJson[lang]["allFilesCopied"], icon="info")
+    else:
+        CTkM(title=langJson[lang]["Error"], message=langJson[lang]["someFilesCopied"], icon="cancel")
 
 def possible_path_error():
     if not os.path.exists(originFolderPath.get()):
@@ -268,6 +293,7 @@ langSelector.place(x=6, y=6)
 creditLabel = CTk.CTkLabel(creditFrame, text = langJson[lang]["creditLabelText"], font=("Arial", 20), height=20, width=300)
 creditLabel.pack()
 creditLabel.place(x = 230, y = 10)
+creditLabel.bind("<Button-1>", open_profile)
 
 imgGit = CTk.CTkImage(Image.open(imgJson["git"][CTk.get_appearance_mode()]), size=(30, 30))
 

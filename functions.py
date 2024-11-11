@@ -11,7 +11,6 @@ def select_origin_folder() -> str:
     Returns:
         str: The path to the selected origin folder.
     """
-    print("Select the folder where the files are located")
     path = fd.askdirectory(title="Select origin folder")
     if not os.path.exists(path) and path != "":
         CTkM(title = "Error", message = "The path does not exist", icon = "cancel")
@@ -25,7 +24,6 @@ def select_destination_folder() -> str:
     Returns:
         str: The path to the selected destination folder.
     """
-    print("Select the folder where the files will be moved")
     path = fd.askdirectory(title="Select destination folder")
     if not os.path.exists(path):
         CTkM(title = "Error", message = "The path does not exist", icon = "cancel")
@@ -51,6 +49,8 @@ def list_files_to_move(origin: str, name: str, extension: str, starts_with: bool
     if extension != "" and not extension.startswith("."):
         extension = "." + extension
     for file in os.listdir(origin):
+        if os.path.isdir(os.path.join(origin, file)):
+            continue
         if case_sensitive:
             if starts_with:
                 if extension == "":
@@ -165,6 +165,7 @@ def move_files_list(origin: str, destination: str, files: list[tuple[str, bool]]
         destination (str): The path to the destination folder.
         files (list[tuple[str, bool]]): A list of tuples containing the file name and a boolean indicating whether the file should be moved.
     """
+    exceptionCount = 0
     for file, move in files:
         if move:
             file_path = os.path.join(origin, file)
@@ -172,8 +173,12 @@ def move_files_list(origin: str, destination: str, files: list[tuple[str, bool]]
                 shutil.move(file_path, destination)
             except PermissionError as e:
                 CTkM(title="Permission Error", message=f"Failed to move {file_path} to {destination}", icon="cancel")
+                exceptionCount += 1
             except shutil.Error as e:
                 CTkM(title="Error", message=f"Failed to move {file_path} to {destination}", icon="cancel")
+                exceptionCount += 1
+
+    return exceptionCount
 
 def copy_files_list(origin: str, destination: str, files: list[tuple[str, bool]]) -> None:
     """
@@ -184,6 +189,7 @@ def copy_files_list(origin: str, destination: str, files: list[tuple[str, bool]]
         destination (str): The path to the destination folder.
         files (list[tuple[str, bool]]): A list of tuples containing the file name and a boolean indicating whether the file should be copied.
     """
+    exceptionCount = 0
     for file, copy in files:
         if copy:
             file_path = os.path.join(origin, file)
@@ -191,5 +197,9 @@ def copy_files_list(origin: str, destination: str, files: list[tuple[str, bool]]
                 shutil.copy(file_path, destination)
             except PermissionError as e:
                 CTkM(title="Permission Error", message=f"Failed to copy {file_path} to {destination}", icon="cancel")
+                exceptionCount += 1
             except shutil.Error as e:
                 CTkM(title="Error", message=f"Failed to copy {file_path} to {destination}", icon="cancel")
+                exceptionCount += 1
+
+    return exceptionCount
