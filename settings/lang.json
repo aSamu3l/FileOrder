@@ -5,6 +5,7 @@
 		"Move": "Move",
 		"Copy": "Copy",
 		"Error": "Error",
+		"Success": "Success",
 		"selectOriginLabelText": "Select Origin Folder Path:",
 		"originFolderPathText": "/origin/folder",
 		"selectDestinationLabelText": "Select Destination Folder Path:",
@@ -18,6 +19,13 @@
 		"pathOriginDoesNotExist": "Path origin does not exist",
 		"pathDestinationDoesNotExist": "Path destination does not exist",
 		"pathOriginAndDestinationAreTheSame": "Path origin and destination are the same",
+		"allFilesMoved": "All files have been moved successfully",
+		"allFilesCopied": "All files have been copied successfully",
+		"someFilesMoved": "Some files could not be moved",
+		"someFilesCopied": "Some files could not be copied",
+		"noFilesFound": "No files found",
+		"fileFound": "1 file found",
+		"filesFound": "# files found",
 		"creditLabelText": "Made with ❤ by aSamu3l"
 	},
 	"IT": {
@@ -26,6 +34,7 @@
 		"Move": "Sposta",
 		"Copy": "Copia",
 		"Error": "Errore",
+		"Success": "Successo",
 		"selectOriginLabelText": "Seleziona la cartella di origine:",
 		"originFolderPathText": "/cartella/di/origine",
 		"selectDestinationLabelText": "Seleziona la cartella di destinazione:",
@@ -39,6 +48,13 @@
 		"pathOriginDoesNotExist": "Il percorso origine non esiste",
 		"pathDestinationDoesNotExist": "Il percorso destinazione non esiste",
 		"pathOriginAndDestinationAreTheSame": "Il percorso origine e destinazione sono uguali",
+		"allFilesMoved": "Tutti i file sono stati spostati con successo",
+		"allFilesCopied": "Tutti i file sono stati copiati con successo",
+		"someFilesMoved": "Alcuni file potrebbero non essere stati spostati",
+		"someFilesCopied": "Alcuni file potrebbero non essere stati copiati",
+		"noFilesFound": "Nessun file è stato trovato",
+		"fileFound": "È stato trovato 1 file",
+		"filesFound": "Sono stati trovati # files",
 		"creditLabelText": "Realizzato con ❤ da aSamu3l"
 	}
 }
