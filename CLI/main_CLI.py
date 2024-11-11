@@ -1,5 +1,5 @@
 import signal
-import functions_CLI as f_CLI
+from CLI import functions_CLI as f_CLI
 from lockf import LockFolder
 
 def handle_exit(signum, frame):
