@@ -1,0 +1,14 @@
+{
+	"file": {
+		"Dark": "img/filew.png",
+		"Light": "img/fileb.png"
+	},
+	"filename": {
+		"Dark": "img/file_extw.png",
+		"Light": "img/file_extb.png"
+	},
+	"git": {
+		"Dark": "img/gitw.png",
+		"Light": "img/gitb.png"
+	}
+}

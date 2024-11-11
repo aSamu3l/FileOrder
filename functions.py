@@ -1,6 +1,7 @@
 import os
 import shutil
-from tkinter import filedialog, messagebox
+from CTkMessagebox import CTkMessagebox as CTkM
+from customtkinter import filedialog as fd
 
 
 def select_origin_folder() -> str:
@@ -11,10 +12,9 @@ def select_origin_folder() -> str:
         str: The path to the selected origin folder.
     """
     print("Select the folder where the files are located")
-    path = filedialog.askdirectory(title="Select origin folder")
-    if not os.path.exists(path):
-        print("The path does not exist")
-        return select_origin_folder()
+    path = fd.askdirectory(title="Select origin folder")
+    if not os.path.exists(path) and path != "":
+        CTkM(title = "Error", message = "The path does not exist", icon = "cancel")
     return path
 
 
@@ -25,71 +25,15 @@ def select_destination_folder() -> str:
     Returns:
         str: The path to the selected destination folder.
     """
-    print("Select the forder where the files will be moved")
-    path = filedialog.askdirectory(title="Select destination folder")
+    print("Select the folder where the files will be moved")
+    path = fd.askdirectory(title="Select destination folder")
     if not os.path.exists(path):
-        print("The path does not exist")
-        return select_destination_folder()
+        CTkM(title = "Error", message = "The path does not exist", icon = "cancel")
+        return ""
     return path
 
 
-def select_file_name() -> str:
-    """
-    Prompts the user to enter the file name to move.
-
-    Returns:
-        str: The entered file name. If left blank, returns an empty string.
-    """
-    print("Select the file name to move")
-    name = input("Enter the file name (leave blank for all): ")
-    return name
-
-
-def select_file_extension() -> str:
-    """
-    Prompts the user to enter the file extension to move.
-
-    Returns:
-        str: The entered file extension. If left blank, returns an empty string.
-    """
-    print("Select the file extension to move")
-    extension = input("Enter the file extension (leave blank for all): ")
-    if extension[0] != ".":
-        extension = "." + extension
-    return extension
-
-
-def preview_files(origin: str, name: str, extension: str, starts_with: bool, case_sensitive: bool) -> None:
-    """
-    Prints a preview of the files to be moved based on the given criteria.
-
-    Args:
-        origin (str): The path to the origin folder.
-        name (str): The file name or part of the file name to match.
-        extension (str): The file extension to match.
-        starts_with (bool): Whether to match files that start with the given name.
-        case_sensitive (bool): Whether the matching should be case-sensitive.
-    """
-    print("Files to move:")
-    for file in os.listdir(origin):
-        if case_sensitive:
-            if starts_with:
-                if if_filename_starts_and_ends(name, extension, file):
-                    print(file)
-            else:
-                if if_filename_contains_and_ends(name, extension, file):
-                    print(file)
-        else:
-            if starts_with:
-                if if_filename_starts_and_ends(name.lower(), extension.lower(), file.lower()):
-                    print(file)
-            else:
-                if if_filename_contains_and_ends(name.lower(), extension.lower(), file.lower()):
-                    print(file)
-
-
-def list_files_to_move(origin: str, name: str, extension: str, starts_with: bool, case_sensitive: bool) -> list[
-    tuple[str, bool]]:
+def list_files_to_move(origin: str, name: str, extension: str, starts_with: bool, case_sensitive: bool) -> list[tuple[str, bool]]:
     """
     Lists the files to be moved based on the given criteria.
 
@@ -104,22 +48,39 @@ def list_files_to_move(origin: str, name: str, extension: str, starts_with: bool
         list[tuple[str, bool]]: A list of tuples containing the file name and a boolean indicating whether the file should be moved.
     """
     files = []
+    if extension != "" and not extension.startswith("."):
+        extension = "." + extension
     for file in os.listdir(origin):
         if case_sensitive:
             if starts_with:
-                if if_filename_starts_and_ends(name, extension, file):
-                    files.append((file, True))
+                if extension == "":
+                    if if_filename_starts(name, file):
+                        files.append((file, True))
+                else:
+                    if if_filename_starts_and_ends(name, extension, file):
+                        files.append((file, True))
             else:
-                if if_filename_contains_and_ends(name, extension, file):
-                    files.append((file, True))
+                if extension == "":
+                    if if_filename_contains(name, file):
+                        files.append((file, True))
+                else:
+                    if if_filename_contains_and_ends(name, extension, file):
+                        files.append((file, True))
         else:
             if starts_with:
-                if if_filename_starts_and_ends(name.lower(), extension.lower(), file.lower()):
-                    files.append((file, True))
+                if extension == "":
+                    if if_filename_starts(name.lower(), file.lower()):
+                        files.append((file, True))
+                else:
+                    if if_filename_starts_and_ends(name.lower(), extension.lower(), file.lower()):
+                        files.append((file, True))
             else:
-                if if_filename_contains_and_ends(name.lower(), extension.lower(), file.lower()):
-                    files.append((file, True))
-
+                if extension == "":
+                    if if_filename_contains(name.lower(), file.lower()):
+                        files.append((file, True))
+                else:
+                    if if_filename_contains_and_ends(name.lower(), extension.lower(), file.lower()):
+                        files.append((file, True))
     return files
 
 
@@ -195,21 +156,6 @@ def if_filename_contains_and_ends(name: str, extension: str, file: str) -> bool:
     return if_filename_contains(name, file) and if_filename_ends(extension, file)
 
 
-def move_files(origin: str, destination: str, name: str, extension: str) -> None:
-    """
-    Moves files from the origin folder to the destination folder based on the given name and extension.
-
-    Args:
-        origin (str): The path to the origin folder.
-        destination (str): The path to the destination folder.
-        name (str): The file name or part of the file name to match.
-        extension (str): The file extension to match.
-    """
-    for file in os.listdir(origin):
-        if name in file and file.endswith(extension):
-            os.rename(os.path.join(origin, file), os.path.join(destination, file))
-
-
 def move_files_list(origin: str, destination: str, files: list[tuple[str, bool]]) -> None:
     """
     Moves the specified files from the origin folder to the destination folder.
@@ -225,19 +171,25 @@ def move_files_list(origin: str, destination: str, files: list[tuple[str, bool]]
             try:
                 shutil.move(file_path, destination)
             except PermissionError as e:
-                messagebox.showerror("Permission Error", f"Failed to move {file_path} to {destination}: {e}")
+                CTkM(title="Permission Error", message=f"Failed to move {file_path} to {destination}", icon="cancel")
+            except shutil.Error as e:
+                CTkM(title="Error", message=f"Failed to move {file_path} to {destination}", icon="cancel")
 
-def change_move_option(files: list[tuple[str, bool]], index: int) -> list[tuple[str, bool]]:
+def copy_files_list(origin: str, destination: str, files: list[tuple[str, bool]]) -> None:
     """
-    Changes the move option for the specified file in the list.
+    Copies the specified files from the origin folder to the destination folder.
 
     Args:
-        files (list[tuple[str, bool]]): A list of tuples containing the file name and a boolean indicating whether the file should be moved.
-        index (int): The index of the file to change the move option for.
-
-    Returns:
-        list[tuple[str, bool]]: The updated list of files.
+        origin (str): The path to the origin folder.
+        destination (str): The path to the destination folder.
+        files (list[tuple[str, bool]]): A list of tuples containing the file name and a boolean indicating whether the file should be copied.
     """
-    if 0 <= index < len(files):
-        files[index] = (files[index][0], not files[index][1])
-    return files
+    for file, copy in files:
+        if copy:
+            file_path = os.path.join(origin, file)
+            try:
+                shutil.copy(file_path, destination)
+            except PermissionError as e:
+                CTkM(title="Permission Error", message=f"Failed to copy {file_path} to {destination}", icon="cancel")
+            except shutil.Error as e:
+                CTkM(title="Error", message=f"Failed to copy {file_path} to {destination}", icon="cancel")

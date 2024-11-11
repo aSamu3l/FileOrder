@@ -1,5 +1,5 @@
 import signal
-import functions as f
+import functions_CLI as f_CLI
 from lockf import LockFolder
 
 def handle_exit(signum, frame):
@@ -7,8 +7,8 @@ def handle_exit(signum, frame):
     exit(0)
 
 def main():
-    origin = f.select_origin_folder()
-    destination = f.select_destination_folder()
+    origin = f_CLI.select_origin_folder()
+    destination = f_CLI.select_destination_folder()
 
     global folder
     folder = LockFolder(destination)
@@ -17,10 +17,10 @@ def main():
     signal.signal(signal.SIGINT, handle_exit)
     signal.signal(signal.SIGTERM, handle_exit)
 
-    name = f.select_file_name()
-    extension = f.select_file_extension()
+    name = f_CLI.select_file_name()
+    extension = f_CLI.select_file_extension()
 
-    file_to_move = f.list_files_to_move(origin, name, extension, starts_with=False, case_sensitive=False)
+    file_to_move = f_CLI.list_files_to_move(origin, name, extension, starts_with=False, case_sensitive=False)
 
     for i, (file, move) in enumerate(file_to_move, start=0):
         print(f"{i} - {file} - {move}")
@@ -32,7 +32,7 @@ def main():
         elif answer == "no":
             return
 
-    f.move_files_list(origin, destination, file_to_move)
+    f_CLI.move_files_list(origin, destination, file_to_move)
 
     folder.unlock()
 
