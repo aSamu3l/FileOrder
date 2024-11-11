@@ -24,7 +24,7 @@
 ## Description
 FileOrder is a Python application that allows you to organize files in a specified folder. The application enables searching, moving, and copying files from a source folder to a destination folder, with the ability to filter files by name and extension.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Features
 - Selection of source and destination folders.
@@ -34,7 +34,7 @@ FileOrder is a Python application that allows you to organize files in a specifi
 - Customizable user interface with support for light and dark modes.
 - Multilingual support (English and Italian).
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Installation
 1. Clone the repository:
@@ -46,12 +46,12 @@ FileOrder is a Python application that allows you to organize files in a specifi
     pip install -r requirements.txt
     ```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Requirements
 - Python 3.10 or higher
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Usage
 1. Run the `main.py` file:
@@ -63,7 +63,7 @@ FileOrder is a Python application that allows you to organize files in a specifi
 4. Search for files and select those to move or copy.
 5. Press the "Move" or "Copy" buttons to perform the desired operation.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Configuration
 ### Language
@@ -76,7 +76,7 @@ If you want to change the language manually, you can edit the `lang` field in th
 ```
 Languages can be updated by anyone with a pull request to `settings/lang.json`.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Supported Languages
 - [x] English (EN)
@@ -85,7 +85,7 @@ Languages can be updated by anyone with a pull request to `settings/lang.json`.
 ## License
 This project is licensed under the `Apache-2.0 License`. See the `LICENSE` file for more details.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Contributors
 
@@ -93,4 +93,4 @@ This project is licensed under the `Apache-2.0 License`. See the `LICENSE` file 
   <img src="https://contrib.rocks/image?repo=aSamu3l/FileOrder" alt="contrib.rocks image" />
 </a>
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#top">back to top</a>)</p>
