@@ -163,7 +163,8 @@ def possible_path_error():
 root = CTk.CTk()
 root.geometry("800x500")
 root.title("File Order")
-root.iconbitmap("./img/icon.ico")
+if os.name == "nt":
+    root.iconbitmap("./img/icon.ico")
 root.resizable(False, False)
 root.grid_columnconfigure(0, weight=1)
 root.grid_rowconfigure(0, weight=1)
